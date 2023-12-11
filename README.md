@@ -1,78 +1,47 @@
-# alx-files_manager
+# Files Manager
 
-This repository contains a file management system with various functionalities, including handling Redis connections, MongoDB operations, creating an Express server, user authentication, file uploads, and more.
+[![Coverage Status](https://coveralls.io/repos/github/B3zaleel/alx-files_manager/badge.svg?branch=main)](https://coveralls.io/github/B3zaleel/alx-files_manager?branch=main)
 
-## Project Structure
+A simple file management API built with Express, MongoDB, Redis, Bull, and Node.js.
 
-The project is organized into the following directories:
+## Requirements
 
-1. `utils`
+### Applications
 
-1.1 `redis.js`
++ Node.js
++ Yarn (the package manager/resource negotiator)
 
-This directory contains the implementation of a Redis utility class named `RedisClient`. It includes methods to connect to Redis, check the connection status, get, set, and delete values.
+### APIs
 
-Example usage in `main.js`:
-```javascript
-import redisClient from './utils/redis';
++ A Google API should be created with at least an email sending scope and a valid URL (e.g.; `http://localhost:5000/`) should be one of the redirect URIs. The `credentials.json` file should be stored in the root directory of this project.
 
-(async () => {
-    console.log(redisClient.isAlive());
-    console.log(await redisClient.get('myKey'));
-    await redisClient.set('myKey', 12, 5);
-    console.log(await redisClient.get('myKey'));
+### Environment Variables
 
-    setTimeout(async () => {
-        console.log(await redisClient.get('myKey'));
-    }, 1000*10);
-})();
-```
+The required environment variables should be stored in a file named `.env` and each line should have the format `Name=Value`. The table below lists the environment variables that will be used by this server:
 
-1.2 `db.js`
+| Name | Required | Description |
+|:-|:-|:-|
+| GOOGLE_MAIL_SENDER | Yes | The email address of the account responsible for sending emails to users. |
+| PORT | No (Default: `5000`)| The port the server should listen at. |
+| DB_HOST | No (Default: `localhost`)| The database host. |
+| DB_PORT | No (Default: `27017`)| The database port. |
+| DB_DATABASE | No (Default: `files_manager`)| The database name. |
+| FOLDER_PATH | No (Default: `/tmp/files_manager` (Linux, Mac OS X) & `%TEMP%/files_manager` (Windows)) | The local folder where files are saved. |
 
-This directory contains the implementation of a MongoDB utility class named `DBClient`. It includes methods to connect to MongoDB, check the connection status, and retrieve the number of users and files in the database.
+## Installation
 
-Example usage in main.js:
++ Clone this repository and switch to the cloned repository's directory.
++ Install the packages using `yarn install` or `npm install`.
 
-```javascript
-import dbClient from './utils/db';
+## Usage
 
-const waitConnection = () => {
-    // ...
-};
+Start the Redis and MongoDB services on your system and run `yarn start-server` or `npm run start-server`.
 
-(async () => {
-    console.log(dbClient.isAlive());
-    await waitConnection();
-    console.log(dbClient.isAlive());
-    console.log(await dbClient.nbUsers());
-    console.log(await dbClient.nbFiles());
-})();
-```
+## Tests
 
-2. `routes`
++ Create a separate `.env` file for the tests named `.env.test` and store the value of the environment variables for the testing event in it.
++ Run `yarn test` or `npm run test` to execute the E2E tests.
 
-2.1 `index.js`
+## Documentation
 
-This directory contains the implementation of an Express server with two endpoints:
-
-* `GET /status` returns the status of Redis and MongoDB.
-* `GET /stats` returns the number of users and files in the database.
-
-Example usage:
-
-```bash
-# Check status
-curl 0.0.0.0:5000/status
-
-# Get statistics
-curl 0.0.0.0:5000/stats
-```
-
-2.2.2 `UsersController.js`
-
-This file contains the definition of an endpoint:
-
-* `POST /users` creates a new user in the database based on the provided email and password.
-
-
++ TODO: Generate OpenAPI documentation with [**apidoc**](https://www.npmjs.com/package/apidoc).
